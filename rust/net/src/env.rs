@@ -50,9 +50,9 @@ const DOMAIN_CONFIG_CHAT: DomainConfig = DomainConfig {
     ],
     connect: ConnectionConfig {
         service: ServiceName("chat"),
-        hostname: "chat.signal.org",
+        hostname: "chat.notechat.me",
         port: DEFAULT_HTTPS_PORT,
-        cert: SIGNAL_ROOT_CERTIFICATES,
+        cert: RootCertificates::Native,
         min_tls_version: Some(SslVersion::TLS1_3),
         http_version: Some(HttpVersion::Http1_1),
         confirmation_header_name: Some(TIMESTAMP_HEADER_NAME),
