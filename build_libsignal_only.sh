@@ -5,7 +5,7 @@ set -e
 echo "====== libsignal iOS 一键编译脚本 ======"
 
 # ========== libsignal 根目录 ==========
-LIBSIGNAL_PATH="/Users/mac/Documents/代码/libsignal"
+LIBSIGNAL_PATH="$(pwd)"
 
 cd "$LIBSIGNAL_PATH"
 echo "当前目录: $(pwd)"
@@ -47,8 +47,10 @@ cargo build --release --target aarch64-apple-ios-sim \
     -Z build-std-features=compiler-builtins-mem
 
 # ================= 校验产物 ==================
-DEVICE_LIB=$(find ~/Documents/代码/libsignal/target/aarch64-apple-ios -name "libsignal_ffi.a" | head -n 1)
-SIM_LIB=$(find ~/Documents/代码/libsignal/target/aarch64-apple-ios-sim -name "libsignal_ffi.a" | head -n 1)
+# 回到根目录查找
+cd "$LIBSIGNAL_PATH"
+DEVICE_LIB=$(find target/aarch64-apple-ios -name "libsignal_ffi.a" | head -n 1)
+SIM_LIB=$(find target/aarch64-apple-ios-sim -name "libsignal_ffi.a" | head -n 1)
 
 echo "====== 校验产物 ======"
 if [ -f "$DEVICE_LIB" ]; then
@@ -66,4 +68,3 @@ else
 fi
 
 echo "====== 完成 ✅ libsignal .a 文件编译完成 ======"
-echo "真机 + 模拟器 .a 文件已经生成，可在 Xcode 中手动引用或生成 xcframework"
