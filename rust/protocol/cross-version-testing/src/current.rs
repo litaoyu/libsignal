@@ -143,10 +143,16 @@ impl super::LibSignalProtocolStore for LibSignalProtocolCurrent {
         .expect("can process pre-key bundles")
     }
 
-    fn encrypt(&mut self, remote: &str, msg: &[u8]) -> (Vec<u8>, CiphertextMessageType) {
+    fn encrypt(
+        &mut self,
+        remote: &str,
+        local: &str,
+        msg: &[u8],
+    ) -> (Vec<u8>, CiphertextMessageType) {
         let encrypted = message_encrypt(
             msg,
             &address(remote),
+            &address(local),
             &mut self.0.session_store,
             &mut self.0.identity_store,
             SystemTime::now(),
@@ -158,7 +164,13 @@ impl super::LibSignalProtocolStore for LibSignalProtocolCurrent {
         (encrypted.serialize().to_vec(), encrypted.message_type())
     }
 
-    fn decrypt(&mut self, remote: &str, msg: &[u8], msg_type: CiphertextMessageType) -> Vec<u8> {
+    fn decrypt(
+        &mut self,
+        remote: &str,
+        local: &str,
+        msg: &[u8],
+        msg_type: CiphertextMessageType,
+    ) -> Vec<u8> {
         match msg_type {
             CiphertextMessageType::Whisper => message_decrypt_signal(
                 &SignalMessage::try_from(msg).expect("valid"),
@@ -173,6 +185,7 @@ impl super::LibSignalProtocolStore for LibSignalProtocolCurrent {
             CiphertextMessageType::PreKey => message_decrypt_prekey(
                 &PreKeySignalMessage::try_from(msg).expect("valid"),
                 &address(remote),
+                &address(local),
                 &mut self.0.session_store,
                 &mut self.0.identity_store,
                 &mut self.0.pre_key_store,

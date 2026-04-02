@@ -170,7 +170,12 @@ impl super::LibSignalProtocolStore for LibSignalProtocolV70 {
         .expect("can process pre-key bundles")
     }
 
-    fn encrypt(&mut self, remote: &str, msg: &[u8]) -> (Vec<u8>, super::CiphertextMessageType) {
+    fn encrypt(
+        &mut self,
+        remote: &str,
+        _local: &str,
+        msg: &[u8],
+    ) -> (Vec<u8>, super::CiphertextMessageType) {
         let encrypted = message_encrypt(
             msg,
             &address(remote),
@@ -190,6 +195,7 @@ impl super::LibSignalProtocolStore for LibSignalProtocolV70 {
     fn decrypt(
         &mut self,
         remote: &str,
+        _local: &str,
         msg: &[u8],
         msg_type: super::CiphertextMessageType,
     ) -> Vec<u8> {

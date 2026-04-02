@@ -1,7 +1,14 @@
-v0.90.0
+v0.91.0
 
-- Add support for a retry later duration in rate limit responses
+- Support gRPC for getUploadForm()
+- 1:1 message encryption and decryption now takes the local address as an extra argument
 
-- keytrans: Simplify the top-level API
+- Add `UserBasedAuthorization.UnrestrictedUnauthenticatedAccess` / `unrestrictedUnauthenticatedAccess` / `'unrestricted'` for `UnauthKeysService.getPreKeys` (and for 1:1 sealed sender messages in the future).
 
-- Use CDSI enclave 3a1ac5e5 in staging.
+- Log more details on gRPC failure
+
+- Log backtraces on panic
+
+- Node: Support H2 when using `localTestServer` mode for Net connections.
+
+- Support upload sizes on getUploadForm()

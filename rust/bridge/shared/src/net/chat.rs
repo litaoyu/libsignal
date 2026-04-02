@@ -18,7 +18,7 @@ use libsignal_net::chat::{self, ConnectError, LanguageList, Response as ChatResp
 use libsignal_net_chat::api::keys::{DeviceSpecifier, GetPreKeysFailure, UnauthenticatedChatApi};
 use libsignal_net_chat::api::messages::{
     AuthenticatedChatApi, MultiRecipientMessageResponse, MultiRecipientSendAuthorization,
-    MultiRecipientSendFailure, UnauthenticatedChatApi as _,
+    MultiRecipientSendFailure, UnauthenticatedChatApi as _, UploadTooLarge,
 };
 use libsignal_net_chat::api::profiles::UnauthenticatedAccountExistenceApi;
 use libsignal_net_chat::api::usernames::UnauthenticatedChatApi as _;
@@ -309,7 +309,7 @@ async fn UnauthenticatedChatConnection_get_pre_keys_access_key_auth(
 }
 
 #[bridge_io(TokioAsyncContext)]
-async fn UnauthenticatedChatConnection_get_pre_keys_access_group_auth(
+async fn UnauthenticatedChatConnection_get_pre_keys_group_auth(
     chat: &UnauthenticatedChatConnection,
     auth: GroupSendFullToken,
     target: ServiceId,
@@ -319,6 +319,30 @@ async fn UnauthenticatedChatConnection_get_pre_keys_access_group_auth(
         Box::pin(async move {
             let (identity_key, pre_key_bundles) = chat
                 .get_pre_keys(UserBasedAuthorization::Group(auth), target, device)
+                .await?;
+            Ok(PreKeysResponse {
+                identity_key,
+                pre_key_bundles,
+            })
+        })
+    })
+    .await
+}
+
+#[bridge_io(TokioAsyncContext)]
+async fn UnauthenticatedChatConnection_get_pre_keys_unrestricted_auth(
+    chat: &UnauthenticatedChatConnection,
+    target: ServiceId,
+    device: DeviceSpecifier,
+) -> Result<PreKeysResponse, RequestError<GetPreKeysFailure>> {
+    chat.as_typed(|chat| {
+        Box::pin(async move {
+            let (identity_key, pre_key_bundles) = chat
+                .get_pre_keys(
+                    UserBasedAuthorization::UnrestrictedUnauthenticatedAccess,
+                    target,
+                    device,
+                )
                 .await?;
             Ok(PreKeysResponse {
                 identity_key,
@@ -340,6 +364,8 @@ async fn UnauthenticatedChatConnection_account_exists(
 #[bridge_io(TokioAsyncContext)]
 async fn AuthenticatedChatConnection_get_upload_form(
     chat: &AuthenticatedChatConnection,
-) -> Result<UploadForm, RequestError<Infallible>> {
-    chat.as_typed(|chat| chat.get_upload_form()).await
+    upload_length: u64,
+) -> Result<UploadForm, RequestError<UploadTooLarge>> {
+    chat.as_typed(|chat| chat.get_upload_form(upload_length))
+        .await
 }
