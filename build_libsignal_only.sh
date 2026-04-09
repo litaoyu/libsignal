@@ -38,19 +38,19 @@ cargo build --release --target aarch64-apple-ios \
     -Z build-std=core,alloc,std \
     -Z build-std-features=compiler-builtins-mem
 
-# ================= 模拟器编译 ==================
-echo "====== 编译 iOS 模拟器 (aarch64-apple-ios-sim) ======"
-export SDKROOT=$(xcrun --sdk iphonesimulator --show-sdk-path)
-echo "使用 SDKROOT: $SDKROOT"
-cargo build --release --target aarch64-apple-ios-sim \
-    -Z build-std=core,alloc,std \
-    -Z build-std-features=compiler-builtins-mem
+# # ================= 模拟器编译 ==================
+# echo "====== 编译 iOS 模拟器 (aarch64-apple-ios-sim) ======"
+# export SDKROOT=$(xcrun --sdk iphonesimulator --show-sdk-path)
+# echo "使用 SDKROOT: $SDKROOT"
+# cargo build --release --target aarch64-apple-ios-sim \
+#     -Z build-std=core,alloc,std \
+#     -Z build-std-features=compiler-builtins-mem
 
 # ================= 校验产物 ==================
 # 回到根目录查找
 cd "$LIBSIGNAL_PATH"
 DEVICE_LIB=$(find target/aarch64-apple-ios -name "libsignal_ffi.a" | head -n 1)
-SIM_LIB=$(find target/aarch64-apple-ios-sim -name "libsignal_ffi.a" | head -n 1)
+# SIM_LIB=$(find target/aarch64-apple-ios-sim -name "libsignal_ffi.a" | head -n 1)
 
 echo "====== 校验产物 ======"
 if [ -f "$DEVICE_LIB" ]; then
@@ -60,11 +60,11 @@ else
     exit 1
 fi
 
-if [ -f "$SIM_LIB" ]; then
-    echo "✅ 模拟器库生成成功: $SIM_LIB"
-else
-    echo "❌ 模拟器库缺失，请检查编译日志"
-    exit 1
-fi
+# if [ -f "$SIM_LIB" ]; then
+#     echo "✅ 模拟器库生成成功: $SIM_LIB"
+# else
+#     echo "❌ 模拟器库缺失，请检查编译日志"
+#     exit 1
+# fi
 
 echo "====== 完成 ✅ libsignal .a 文件编译完成 ======"
