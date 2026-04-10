@@ -91,7 +91,7 @@ where
 
     match operation().await {
         Ok(x) => {
-            log::info!("[{log_tag} {request_id:04x}] {log_safe_description} OK");
+            log::info!("[{log_tag} {request_id:04x}] {log_safe_description} done");
             Ok(x)
         }
         Err(status) => {
@@ -173,7 +173,7 @@ impl<E> From<tonic::Status> for RequestError<E> {
                     }
                     .into();
                 }
-                // TODO: also handle challenges here?
+                // Fall through to the "unexpected" case.
             }
             tonic::Code::Ok => {
                 return RequestError::Unexpected {

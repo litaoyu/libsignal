@@ -2414,6 +2414,7 @@ dependencies = [
  "strum",
  "tokio",
  "uuid",
+ "zkgroup",
 ]
 
 [[package]]
@@ -2455,6 +2456,7 @@ dependencies = [
  "partial-default",
  "paste",
  "rand 0.9.2",
+ "rand_chacha",
  "rayon",
  "serde",
  "sha2",
@@ -2514,14 +2516,14 @@ dependencies = [
 
 [[package]]
 name = "libsignal-debug"
-version = "0.91.0"
+version = "0.92.1"
 dependencies = [
  "cfg-if",
 ]
 
 [[package]]
 name = "libsignal-ffi"
-version = "0.91.0"
+version = "0.92.1"
 dependencies = [
  "cpufeatures",
  "hex",
@@ -2542,7 +2544,7 @@ dependencies = [
 
 [[package]]
 name = "libsignal-jni"
-version = "0.91.0"
+version = "0.92.1"
 dependencies = [
  "libsignal-debug",
  "libsignal-jni-impl",
@@ -2550,7 +2552,7 @@ dependencies = [
 
 [[package]]
 name = "libsignal-jni-impl"
-version = "0.91.0"
+version = "0.92.1"
 dependencies = [
  "cfg-if",
  "cpufeatures",
@@ -2567,7 +2569,7 @@ dependencies = [
 
 [[package]]
 name = "libsignal-jni-testing"
-version = "0.91.0"
+version = "0.92.1"
 dependencies = [
  "jni",
  "libsignal-bridge-testing",
@@ -2882,7 +2884,7 @@ dependencies = [
 
 [[package]]
 name = "libsignal-node"
-version = "0.91.0"
+version = "0.92.1"
 dependencies = [
  "futures",
  "libsignal-bridge",

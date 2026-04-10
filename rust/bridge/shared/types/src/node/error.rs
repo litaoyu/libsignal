@@ -8,6 +8,7 @@ use std::fmt;
 
 use libsignal_net::infra::errors::{RetryLater, TransportConnectError};
 use libsignal_net::infra::ws::WebSocketConnectError;
+use libsignal_net_chat::api::backups::GetUploadFormFailure;
 use libsignal_net_chat::api::keys::GetPreKeysFailure;
 use libsignal_net_chat::api::messages::UploadTooLarge;
 use neon::thread::LocalKey;
@@ -273,7 +274,7 @@ impl SignalNodeError for libsignal_net::svrb::Error {
             Self::DataMissing => (Some("SvrDataMissing"), None),
             Self::Protocol(_) => (Some("IoError"), None),
             Self::PreviousBackupDataInvalid => (Some("SvrInvalidData"), None),
-            Self::MetadataInvalid => (Some("SvrInvalidData"), None),
+            Self::MetadataInvalid(_) => (Some("SvrInvalidData"), None),
             Self::DecryptionError(_) => (Some("SvrInvalidData"), None),
         };
 
@@ -650,6 +651,32 @@ impl SignalNodeError for UploadTooLarge {
             operation_name,
             no_extra_properties,
         )
+    }
+}
+
+impl SignalNodeError for GetUploadFormFailure {
+    fn into_throwable<'a, C: Context<'a>>(
+        self,
+        cx: &mut C,
+        operation_name: &str,
+    ) -> Handle<'a, JsError> {
+        let msg = self.to_string();
+        match self {
+            GetUploadFormFailure::Unauthorized => new_js_error(
+                cx,
+                Some("RequestUnauthorized"),
+                &msg,
+                operation_name,
+                no_extra_properties,
+            ),
+            GetUploadFormFailure::UploadTooLarge => new_js_error(
+                cx,
+                Some("UploadTooLarge"),
+                &msg,
+                operation_name,
+                no_extra_properties,
+            ),
+        }
     }
 }
 
