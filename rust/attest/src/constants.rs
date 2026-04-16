@@ -57,7 +57,7 @@ def_enclaves! {
     ENCLAVE_ID_SVR2_2025Q3_PROD => ("29cd63c87bea751e3bfd0fbd401279192e2e5c99948b4ee9437eafc4968355fb", common),
     ENCLAVE_ID_SVRB_2025Q3_PROD => ("aa906dbc85965d37accb660b65a8c224f037b0e7cfd034532acada3592e5b446", common),
     ENCLAVE_ID_SVR2_2026Q1_STAGING => ("97f151f6ed078edbbfd72fa9cae694dcc08353f1f5e8d9ccd79a971b10ffc535", common),
-    ENCLAVE_ID_SVR2_2026Q1_PROD => ("1240acbd4aa26974184844c8a46b1022d3957ac8a76c1fd8f5b1a15141ee0708", common),
+    ENCLAVE_ID_SVR2_2026Q1_PROD => ("a75542d82da9f6914a1e31f8a7407053b99cc99a0e7291d8fbd394253e19b036", common),
     ENCLAVE_ID_SVRB_2026Q1_STAGING => ("97f151f6ed078edbbfd72fa9cae694dcc08353f1f5e8d9ccd79a971b10ffc535", common),
     ENCLAVE_ID_SVRB_2026Q1_PROD => ("bee62050df1072e3d9fdf7660bfaf4e4b71f5622db9de8b30fc5f4b9852d8359", common),
     ENCLAVE_ID_CDSI_STAGING => ("3ded708ca5a42fd84b4639dc661a7ec4b9c9f1b92809c0fc91da2349a5a89d05", common),
@@ -99,12 +99,12 @@ pub const RAFT_CONFIG_SVR2_2026Q1_STAGING: &RaftConfig = &RaftConfig {
 };
 
 pub const RAFT_CONFIG_SVR2_2026Q1_PROD: &RaftConfig = &RaftConfig {
-    min_voting_replicas: 4,
-    max_voting_replicas: 13,
-    super_majority: 2,
-    group_id: 2076725645304009823,
+    min_voting_replicas: 1,
+    max_voting_replicas: 5,
+    super_majority: 0,
+    group_id: 965738810980011509,
     db_version: 2,
-    attestation_timeout: 604800,
+    attestation_timeout: 86400,
     simulated: false,
 };
 

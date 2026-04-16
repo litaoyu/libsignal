@@ -160,9 +160,9 @@ const DOMAIN_CONFIG_CDSI_STAGING: DomainConfig = DomainConfig {
 const DOMAIN_CONFIG_SVR2: DomainConfig = DomainConfig {
     connect: ConnectionConfig {
         service: ServiceName("svr2"),
-        hostname: "svr2.signal.org",
+        hostname: "svr2.notechat.me",
         port: DEFAULT_HTTPS_PORT,
-        cert: SIGNAL_ROOT_CERTIFICATES,
+        cert: RootCertificates::Native,
         min_tls_version: Some(SslVersion::TLS1_3),
         http_version: Some(HttpVersion::Http1_1),
         confirmation_header_name: None,
